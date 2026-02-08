@@ -14,6 +14,10 @@ on:
     branches: [master, develop]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository_owner }}/paper-catalog
@@ -41,7 +45,8 @@ jobs:
         run: uv run ruff check app/ || echo "Ruff not configured, skipping lint"
 
       - name: Import check
-        run: uv run python -c "from app.main import app; print('OK: FastAPI app loaded')"
+        run: |
+          uv run python -c "from app.main import app; print('OK: FastAPI app loaded')"
 
       - name: Run tests
         run: uv run pytest tests/ -v || echo "No tests found, skipping"
