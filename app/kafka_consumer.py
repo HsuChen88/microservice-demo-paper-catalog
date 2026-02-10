@@ -69,9 +69,9 @@ async def upsert_paper(pool: asyncpg.Pool, event: dict) -> None:
             try:
                 created_at = datetime.fromisoformat(event["createdAt"].replace("Z", "+00:00"))
             except (ValueError, AttributeError):
-                created_at = datetime.utcnow()
+                created_at = datetime.now()
         else:
-            created_at = datetime.utcnow()
+            created_at = datetime.now()
         
         async with pool.acquire() as conn:
             await conn.execute("""
